@@ -11,17 +11,13 @@ def mars_news():
     # Create BeautifulSoup object; parse with 'html.parser'
     soup = BeautifulSoup(response.text, 'html.parser')
 
-    try:
-        news = soup.find('div',class_="content_title")
-        news_title = news.find('a').text.strip()
-        par = soup.find('div', class_="rollover_description_inner")
-        news_par = par.text.strip()
-
-    except AttributeError:
-        return None, None
+    news = soup.find('div',class_="content_title")
+    news_title = news.find('a').text.strip()
+    par = soup.find('div', class_="rollover_description_inner")
+    news_par = par.text.strip()
 
     return news_title, news_par
-    news_title, news_par = mars_news()
+news_title, news_par = mars_news()
 
 
 def featured_image():
@@ -33,7 +29,7 @@ def featured_image():
     feat = soup2.find('section',class_="centered_text clearfix main_feature primary_media_feature single")
     feature_image =  feat.a['data-fancybox-href']
     image_url = "https://www.jpl.nasa.gov/" + feature_image
-    img = image_url.get("src") 
+     
     return image_url
     
      
@@ -54,13 +50,9 @@ def weather():
 
 def facts():
     df_Mars_Facts = pd.read_html("https://space-facts.com/mars/")
-
     df_Mars_Facts = df_Mars_Facts[0]
-
     df_Mars_Facts.rename({0:"Parameters", 1:"Values"},axis=1, inplace=True)
-
     df_Mars_Facts = df_Mars_Facts
-
     df_Mars_Facts_table = df_Mars_Facts.to_html("df_Mars_Facts_Table.html",index=False)
 
     return df_Mars_Facts_table  
